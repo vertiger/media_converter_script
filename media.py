@@ -18,7 +18,7 @@ for mfile in glob.iglob("/run/user/1000/gvfs/smb-share:server=ds415plus.local,sh
                 subtitle_arg = "-s {}".format(','.join(subtitle_tracks))
             else:
                 subtitle_arg = ""
-            command = "HandBrakeCLI -i '{}' -o '{}' -O --preset='High Profile' --h264-level 5.2 {} {} --keep-display-aspect --cfr".format(
+            command = "HandBrakeCLI -i '{}' -o '{}' -O --preset='High Profile' --h264-level 5.2 --x264-preset slow {} {} --keep-display-aspect --cfr".format(
                 mfile, os.path.basename(mfile), audio_arg, subtitle_arg)
             print(command)
             subprocess.call(command, shell=True)
