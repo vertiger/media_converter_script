@@ -12,7 +12,7 @@ for mfile in glob.iglob("/run/user/1000/gvfs/smb-share:server=ds415plus.local,sh
             print(mfile)
             print(mkv)
             audio_tracks = ['{}'.format(idx) for idx, _ in enumerate(mkv.audio_tracks, start=1)]
-            audio_arg = "-a {} -E {}".format(','.join(audio_tracks), ','.join(['copy' for _ in audio_tracks]))
+            audio_arg = "--audio-fallback av_aac -a {} -E {}".format(','.join(audio_tracks), ','.join(['copy' for _ in audio_tracks]))
             subtitle_tracks = ['{}'.format(idx) for idx, _ in enumerate(mkv.subtitle_tracks, start=1)]
             if subtitle_tracks:
                 subtitle_arg = "-s {}".format(','.join(subtitle_tracks))
