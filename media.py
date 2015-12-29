@@ -5,14 +5,14 @@ import subprocess
 import os
 
 
-for mfile in glob.iglob("/run/user/1000/gvfs/smb-share:server=ds415plus.local,share=video/movies/*/*.mkv"):
+for mfile in glob.iglob("/run/user/1000/gvfs/smb-share:server=ds415plus.local,share=video/*/*/*.mkv"):
     try:
         with open(mfile, 'rb') as f:
             mkv = enzyme.MKV(f)
     except enzyme.exceptions.MalformedMKVError:
         print("Malformed MKV: \"{}\"".format(mfile))
         raise
-    if 'AVC' in mkv.video_tracks[0].codec_id:
+    if 'AVC' in mkv.video_tracks[0].codec_id or 'HEVC' in mkv.video_tracks[0].codec_id:
         continue
     print("convert file \"{}\"".format(mfile))
     print(mkv)
@@ -24,7 +24,7 @@ for mfile in glob.iglob("/run/user/1000/gvfs/smb-share:server=ds415plus.local,sh
     else:
         subtitle_arg = ""
     target_file = os.path.join('/tmp', os.path.basename(mfile))
-    command = "HandBrakeCLI -i \"{}\" -o \"{}\" -O --preset=\"High Profile\" --h264-level 5.2 --x264-preset slow {} {} --keep-display-aspect --cfr".format(
+    command = "HandBrakeCLI -i \"{}\" -o \"{}\" -O --preset=\"High Profile\" --h264-level 5.2 --x264-preset slow {} {} --keep-display-aspect".format(
         mfile, target_file, audio_arg, subtitle_arg)
     print(command)
     try:
