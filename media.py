@@ -41,9 +41,16 @@ for mfile in matches:
         subtitle_arg = "-s {}".format(','.join(subtitle_tracks))
     else:
         subtitle_arg = ""
+    quality = 20
+    if mkv.video_tracks[0].width > 700:
+        quality = 21
+    if mkv.video_tracks[0].width > 1200:
+        quality = 22
+    if mkv.video_tracks[0].width > 1800:
+        quality = 23
     target_file = os.path.join('/tmp', os.path.basename(mfile))
-    command = "HandBrakeCLI -i \"{}\" -o \"{}\" -O --preset=\"High Profile\" --h264-level 4.0 --x264-preset slow {} {} --keep-display-aspect".format(
-        mfile, target_file, audio_arg, subtitle_arg)
+    command = "HandBrakeCLI -i \"{}\" -o \"{}\" -O --preset=\"High Profile\" --h264-level 4.0 --x264-preset slow --quality {} {} {} --keep-display-aspect".format(
+        mfile, target_file, quality, audio_arg, subtitle_arg)
     print(command)
     try:
         subprocess.call(command, shell=True)
