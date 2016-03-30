@@ -37,17 +37,14 @@ for mfile in matches:
     audio_tracks = ['{}'.format(idx) for idx, _ in enumerate(mkv.audio_tracks, start=1)]
     audio_arg = "--audio-copy-mask aac --audio-fallback av_aac -a {} -E {}".format(','.join(audio_tracks), ','.join(['copy' for _ in audio_tracks]))
     subtitle_tracks = ['{}'.format(idx) for idx, _ in enumerate(mkv.subtitle_tracks, start=1)]
-    if subtitle_tracks:
-        subtitle_arg = "-s {}".format(','.join(subtitle_tracks))
-    else:
-        subtitle_arg = ""
-    quality = 20
+    subtitle_arg = "-s {}".format(','.join(subtitle_tracks)) if subtitle_tracks else ""
+    quality = 18
     if mkv.video_tracks[0].width > 700:
-        quality = 21
+        quality = 19
     if mkv.video_tracks[0].width > 1200:
-        quality = 22
+        quality = 20
     if mkv.video_tracks[0].width > 1800:
-        quality = 23
+        quality = 21
     target_file = os.path.join('/tmp', os.path.basename(mfile))
     command = "HandBrakeCLI -i \"{}\" -o \"{}\" -O --preset=\"High Profile\" --h264-level 4.0 --x264-preset slow --quality {} {} {} --keep-display-aspect".format(
         mfile, target_file, quality, audio_arg, subtitle_arg)
